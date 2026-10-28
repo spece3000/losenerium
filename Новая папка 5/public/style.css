@@ -1,0 +1,83 @@
+body{
+    margin: 0px;
+    box-sizing: border-box;
+}
+p{
+    margin: 0px;
+    color: white;
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+h2{
+    margin: 10px;
+    color: black;
+    font-family: "Playfair Display", serif;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    padding: 15px 100px;
+    background-color: #212121;
+}
+.containerLogo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.imgLogo{
+    width: 70px;
+    height: 70px;
+}
+.textLogo{
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 50px;
+}
+.navigationUl{
+    display: flex;
+    gap: 70px;
+    list-style: none;
+    align-items: center
+}
+.navigationUl li a{
+    font-size: 35px;
+}
+.profileImg{
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 300px;
+}
+.footer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 70px;
+    padding: 15px 0px;
+    background-color: #212121;
+}
+.footer a{
+    font-size: 40px;
+    font-family: "Playfair Display", serif;
+}
+.footer .num{
+    font-family: 'Inter', sans-serif;
+}
+.socialMediaContain{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+.socialMediaContain a img{
+    width: 70px;
+    height: 70px;
+}
