@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>LOSENERIUM</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cm-chessboard@8/assets/chessboard.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com" rel="stylesheet">   
     <script defer src="client.js"></script>
 </head>
 <body>
@@ -31,35 +29,104 @@
             </ul>
         </nav>
     </header>
+
     <main>
-        <section class="slider"></section>
+        <section class="swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="img/Slide1.webp" alt=""></div>
+                <div class="swiper-slide"><img src="img/Slide2.webp" alt=""></div>
+                <div class="swiper-slide"><img src="img/Slide3.webp" alt=""></div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </section>
+
         <h2 id="branchsHeadline">наши филиалы</h2>
-        <section class="branchs"></section>
+        <section class="branchs">
+            <img src="img/im1.webp" alt="филиал 1">
+            <img src="img/im2.webp" alt="филиал 2">
+            <img src="img/im3.webp" alt="филиал 3">
+        </section>
+
         <h2 id="menuHeadline">меню</h2>
         <section class="menu">
             <div class="menuManipulate"></div>
             <div class="menuContain"></div>
         </section>
+
         <h2 id="aboutHeadline">история</h2>
         <section class="about">
             <div>
-                <img src="" alt="">
-                <p></p>
+                <img src="img/tree.png" alt="дерево">
+                <p>История сети началась с южнокорейского кафе, которое открыла Юн-Джин Ли, вдохновившись сериалом «W — два мира». В России «ЧБ Кафе» заработало в ноябре: интерьер петербургского филиала создала художница Анфиса Тошина, а команда выполнила ремонт своими руками. Вирусную известность сеть обрела благодаря фотографиям филиала на набережной Мойки, разлетевшимся по соцсетям.</p>
             </div>
-            <div>
-                <p></p>
-                <div></div>
+            <div class="about-board">
+                <p>«ЧБ Кафе» — сеть кофеен в Москве и Санкт-Петербурге с монохромным интерьером: помещение выглядит как плоскостной рисунок углём на белой бумаге, а посетитель — единственный объёмный объект в этом нарисованном мире. В меню — кофейная классика, завтраки, сэндвичи и десерты. А ещё у нас можно сыграть партию в шахматы — попробуйте прямо сейчас:</p>
+                <div id="board"></div>
             </div>
         </section>
     </main>
+
     <footer class="footer">
-        <a class="num" href="">89999999999</a>
-        <a href="">LR@gmail.com</a>
+        <a class="num" href="tel:89999999999">89999999999</a>
+        <a href="mailto:LR@gmail.com">LR@gmail.com</a>
         <div class="socialMediaContain">
             <a href=""><img src="img/tg.png" alt="лого телеграмм"></a>
             <a href=""><img src="img/tt.png" alt="лого тик тока"></a>
             <a href=""><img src="img/wk.png" alt="лого вк"></a>
         </div>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+    <script>
+        new Swiper('.swiper', {
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            loop: true
+        });
+    </script>
+
+    <script type="module">
+        import { Chessboard, INPUT_EVENT_TYPE } from 'https://cdn.jsdelivr.net/npm/cm-chessboard@8/src/Chessboard.js';
+        import { FEN } from 'https://cdn.jsdelivr.net/npm/cm-chessboard@8/src/model/Position.js';
+
+        const game = new Chess();
+
+        const board = new Chessboard(document.getElementById('board'), {
+            position: FEN.start,
+            orientation: 'white',
+            assetsUrl: 'https://cdn.jsdelivr.net/npm/cm-chessboard@8/assets/',
+            style: {
+                cssClass: 'default',
+                showCoordinates: true
+            }
+        });
+
+        board.enableMoveInput((event) => {
+            switch (event.type) {
+                case INPUT_EVENT_TYPE.moveInputStarted:
+                    return true;
+
+                case INPUT_EVENT_TYPE.validateMoveInput: {
+                    const moves = game.moves({ square: event.squareFrom, verbose: true });
+                    return moves.some(m => m.to === event.squareTo);
+                }
+
+                case INPUT_EVENT_TYPE.moveInputFinished: {
+                    game.move({
+                        from: event.squareFrom,
+                        to: event.squareTo,
+                        promotion: 'q'
+                    });
+                    board.setPosition(game.fen(), false);
+                    return true;
+                }
+
+                case INPUT_EVENT_TYPE.moveInputCanceled:
+                    return true;
+            }
+        });
+    </script>
 </body>
 </html>
