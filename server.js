@@ -1,6 +1,8 @@
 import express from "express";
 import mysql from "mysql2/promise";
 import bcrypt from 'bcrypt';
+import multer from 'multer';
+import path from 'path'; 
 
 const app = express();
 
@@ -17,6 +19,32 @@ const pool = mysql.createPool({
     password: "123456",
     database: "losenerium",
     connectionLimit: 5
+});
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/img/products/');
+    },
+    filename: function (req, file, cb) {
+        const ext = path.extname(file.originalname);
+        const baseName = path.basename(file.originalname, ext);
+        const uniqueSuffix = baseName + '-' + Math.round(Math.random() * 1E9) + ext; 
+        cb(null, uniqueSuffix);
+    }
+});
+
+const upload = multer({ 
+    storage: storage,
+    limits: {
+        fileSize: 2 * 1024 * 1024
+    },
+    fileFilter: function (req, file, cb) {
+        if (file.mimetype === 'image/png') {
+            cb(null, true);
+        } else {
+            cb(new Error("Можно загружать только изображения в формате PNG!")); 
+        }
+    }
 });
 
 pool.getConnection()
@@ -166,6 +194,46 @@ app.post("/delete-profile", async function(req, res) {
         console.error("Ошибка при удалении пользователя:", err);
         res.status(500).json({ message: "Ошибка базы данных при удалении" });
     }
+});
+
+app.get("/admin-users", async function(req, res) {
+    try {
+        const [users] = await pool.query("SELECT UserName FROM users WHERE UserName != 'admin'");
+        res.json(users);
+    } catch (err) {
+        console.error("Ошибка при получении списка юзеров:", err);
+        res.status(500).json({ message: "Ошибка базы данных" });
+    }
+});
+
+app.post("/add-product", (req, res) => {
+    upload.single('productImage')(req, res, async function (err) {
+        if (err) {
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                return res.status(400).json({ message: "Файл слишком большой. Максимум 2 МБ." });
+            }
+            return res.status(400).json({ message: err.message });
+        }
+
+        const { ProductName, ProductPrice } = req.body;
+        const file = req.file;
+
+        if (!ProductName || !ProductPrice || !file) {
+            return res.status(400).json({ message: "Заполните все поля и выберите фото!" });
+        }
+
+        try {
+            const imagePath = `/img/products/${file.filename}`;
+            await pool.query(
+                "INSERT INTO products (ProductName, ProductPrice, ProductImage) VALUES (?, ?, ?)",
+                [ProductName, ProductPrice, imagePath]
+            );
+            res.json({ message: "Товар успешно добавлен!" });
+        } catch (err) {
+            console.error("Ошибка при добавлении товара:", err);
+            res.status(500).json({ message: "Ошибка базы данных" });
+        }
+    });
 });
 
 app.listen(3000, () => {

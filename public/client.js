@@ -125,6 +125,11 @@ async function serverReg(mode, userData){
         if (response.ok) {
             alert(result.message);
             localStorage.setItem('username', userData.username); 
+
+            if (mode === 'login' && userData.username === 'admin'){
+                window.location.href = '/admin.html'; 
+                return
+            }
             if (mode === 'login' || mode === 'registration') {
                 window.location.href = '/profil.html'; 
             }

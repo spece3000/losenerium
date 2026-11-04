@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOSENERIUM - Админ панель</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script defer src="admin.js"></script>
+</head>
+<body>
+    <header class="header header-profile">
+        <a href="index.html" class="containerLogo">
+            <img class="imgLogo" src="img/coffee-icon-logo.png" alt="лого">
+            <h1 class="textLogo">LOSENERIUM</h1>
+        </a>
+    </header>
+
+    <main class="admin-main">
+        <div class="admin-top-row">
+
+            <div class="admin-section">
+                <h2 class="admin-title">пользователи</h2>
+                <div class="admin-box">
+                    <div class="user-list">
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-section orders-section">
+                <h2 class="admin-title">заказы</h2>
+                <div class="admin-box orders-box">
+                    <div class="order-window">
+                        <div class="order-items">
+                            <div class="order-item">
+                                <div class="order-info">
+                                </div>
+                                <span class="order-qty">0</span>
+                            </div>
+                        </div>
+                        <div class="order-total">0р.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="admin-section create-section">
+            <h2 class="admin-title">создай товар</h2>
+            
+            <form class="admin-box create-box" id="addProductForm" enctype="multipart/form-data">
+
+                <input type="file" id="productImage" name="productImage" hidden accept="image/png">
+                
+                <button type="button" class="btn-photo" id="triggerPhotoBtn">фото</button>
+                
+                <div class="create-inputs">
+                    <input type="number" id="productPrice" name="ProductPrice" placeholder="стоимость" required>
+                    <input type="text" id="productName" name="ProductName" placeholder="название" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">добавить</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

@@ -231,6 +231,7 @@ main {
 }
 .product_img_four {
     width: 100px;
+    max-height: 75px;
 }
 .product{
     display: flex;
@@ -259,6 +260,7 @@ main {
 }
 .product_img {
     width: 200px;
+    max-height: 175px;
 }
 .product_name {
     font-family: "JetBrains Mono", monospace;
@@ -563,3 +565,188 @@ main {
     font-size: 30px;
     margin: 0;
 }
+.admin-main {
+    max-width: 1400px;
+    width: 100%;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+.admin-top-row {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+}
+.admin-section {
+    display: flex;
+    flex-direction: column;
+}
+.admin-title {
+    color: black;
+    font-family: "Playfair Display", serif;
+    font-size: 32px;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: lowercase;
+}
+.admin-box {
+    background-color: #212121;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.admin-section:first-child {
+    width: 250px;
+    flex-shrink: 0;
+}
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    padding-right: 10px; 
+}
+.user-list::-webkit-scrollbar {
+    width: 6px;
+}
+.user-list::-webkit-scrollbar-track {
+    background: #212121;
+}
+.user-list::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 5px;
+}
+.user-item {
+    background-color: white;
+    color: black;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    flex-shrink: 0;
+}
+.user-item.active {
+    background-color: #d3d3d3;
+}
+.orders-section {
+    flex: 1;
+}
+.orders-box {
+    display: flex;
+    justify-content: flex-start;
+}
+.order-window {
+    background-color: white;
+    border-radius: 10px;
+    width: 200px;
+    height: 100%;
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.order-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+}
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: black;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+.order-info p {
+    margin: 0;
+    color: black;
+    font-size: 14px;
+    text-align: left;
+}
+.order-subtext {
+    color: #888;
+    font-size: 12px;
+}
+.order-qty {
+    font-size: 12px;
+}
+.order-total {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: black;
+    text-align: right;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: auto;
+}
+.create-section {
+    margin-top: 30px;
+    width: 350px;
+}
+.create-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+.btn-photo {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: lowercase;
+}
+.create-inputs {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+.create-inputs input {
+    width: 50%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    font-family: "Playfair Display", serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    background-color: white;
+    color: black;
+}
+.create-inputs input::placeholder {
+    color: black;
+    opacity: 1; 
+}
+.btn-submit {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}
+.btn-submit:hover { background-color: #d3d3d3; }
