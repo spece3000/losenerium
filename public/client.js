@@ -71,7 +71,7 @@ function sort_new(p) {
     const textStylePrice = isFour ? 'font-size: 20px' : '';
     const textStyleName = isFour ? 'font-size: 30px' : '';
 
-    shop_div.innerHTML += `<div class="product" price="${p.ProductPrice}">
+    shop_div.innerHTML += `<div class="product" price="${p.ProductPrice}" onclick="addToCart(${p.ProductId})">
                                 <div class="${productClass}">
                                     <p class="product_price" style='${textStylePrice}'>${p.ProductPrice}р.</p>
                                     <img class="${imgClass}" src="${p.ProductImage}" alt="${p.ProductName}">
@@ -79,6 +79,32 @@ function sort_new(p) {
                                 <p class="product_name" style='${textStyleName}'>${p.ProductName}</p>
                             </div>`;
 }
+
+async function addToCart(productId) {
+    if (!localStorage.getItem('username')) {
+        alert("Пожалуйста, войдите или зарегистрируйтесь, чтобы добавить товар в корзину!");
+        return;
+    }
+    try {
+        let response = await fetch('/add-to-cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+            body: JSON.stringify({ username: localStorage.getItem('username'), productId: productId })
+        });
+
+        let result = await response.json();
+
+        if (response.ok) {
+            alert(result.message);
+        } else {
+            alert(result.message);
+        }
+    } catch (err) {
+        console.error("Ошибка добавления в корзину:", err);
+        alert("Ошибка соединения с сервером");
+    }
+}
+
 menu_change();
 
 const profileImg = document.querySelector('.profileImg');
@@ -89,6 +115,10 @@ const toRegisterBtn = document.getElementById('toRegister');
 const toLoginBtn = document.getElementById('toLogin');
 
 profileImg.addEventListener('click', () => {
+    if (localStorage.getItem('username') && localStorage.getItem('username') !== 'admin') {
+        window.location.href = '/profil.html';
+        return; 
+    }
     authModal.classList.add('active');
     loginBox.style.display = 'flex';
     registerBox.style.display = 'none';

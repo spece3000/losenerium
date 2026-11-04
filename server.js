@@ -236,6 +236,133 @@ app.post("/add-product", (req, res) => {
     });
 });
 
+app.post("/add-to-cart", async function(req, res) {
+    const { username, productId } = req.body;
+
+    if (!username || !productId) {
+        return res.status(400).json({ message: "Не переданы данные" });
+    }
+
+    try {
+        const [users] = await pool.query("SELECT UserId FROM users WHERE UserName = ?", [username]);
+        if (users.length === 0) return res.status(404).json({ message: "Пользователь не найден" });
+        const userId = users[0].UserId;
+
+        const [products] = await pool.query("SELECT ProductPrice FROM products WHERE ProductId = ?", [productId]);
+        if (products.length === 0) return res.status(404).json({ message: "Товар не найден" });
+        const price = products[0].ProductPrice;
+
+        await pool.query(
+            `INSERT INTO CartItems (UserId, ProductId, QuantityCart, UnitPriceCart) 
+             VALUES (?, ?, 1, ?) 
+             ON DUPLICATE KEY UPDATE QuantityCart = QuantityCart + 1`,
+            [userId, productId, price]
+        );
+
+        res.json({ message: "Товар добавлен в корзину!" });
+    } catch (err) {
+        console.error("Ошибка при добавлении в корзину:", err);
+        res.status(500).json({ message: "Ошибка базы данных" });
+    }
+});
+
+app.post("/get-cart", async function(req, res) {
+    const { username } = req.body;
+    try {
+        const [cart] = await pool.query(`
+            SELECT c.CartId, c.QuantityCart, c.UnitPriceCart, p.ProductName, p.ProductImage
+            FROM CartItems c
+            JOIN users u ON c.UserId = u.UserId
+            JOIN products p ON c.ProductId = p.ProductId
+            WHERE u.UserName = ?
+        `, [username]);
+        res.json(cart);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Ошибка БД" });
+    }
+});
+
+app.post("/clear-cart", async function(req, res) {
+    const { username } = req.body;
+    try {
+        await pool.query(`
+            DELETE c FROM CartItems c
+            JOIN users u ON c.UserId = u.UserId
+            WHERE u.UserName = ?
+        `, [username]);
+        res.json({ message: "Корзина очищена" });
+    } catch (err) {
+        res.status(500).json({ message: "Ошибка БД" });
+    }
+});
+
+app.post("/checkout", async function(req, res) {
+    const { username } = req.body;
+    try {
+        const [users] = await pool.query("SELECT UserId FROM users WHERE UserName = ?", [username]);
+        if (users.length === 0) return res.status(404).json({ message: "Юзер не найден" });
+        const userId = users[0].UserId;
+
+        const [cart] = await pool.query("SELECT * FROM CartItems WHERE UserId = ?", [userId]);
+        if (cart.length === 0) return res.status(400).json({ message: "Корзина пуста" });
+
+        const randomBranchId = Math.floor(Math.random() * 3) + 1;
+
+        const [orderResult] = await pool.query(
+            "INSERT INTO Orders (UserId, BranchId, Status) VALUES (?, ?, 'Обработан')", 
+            [userId, randomBranchId]
+        );
+        const orderId = orderResult.insertId;
+
+        for (let item of cart) {
+            await pool.query(
+                "INSERT INTO OrderItems (OrderId, ProductId, QuantityOrder, UnitPriceCart) VALUES (?, ?, ?, ?)",
+                [orderId, item.ProductId, item.QuantityCart, item.UnitPriceCart]
+            );
+        }
+
+        await pool.query("DELETE FROM CartItems WHERE UserId = ?", [userId]);
+
+        res.json({ message: "Заказ успешно оформлен!" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Ошибка при оформлении заказа" });
+    }
+});
+
+app.post("/admin-orders", async function(req, res) {
+    const { username } = req.body;
+
+    if (!username) {
+        return res.status(400).json({ message: "Не передан логин" });
+    }
+
+    try {
+        const [orders] = await pool.query(`
+            SELECT 
+                o.OrderId, 
+                b.BranchAddress,
+                p.ProductName, 
+                oi.QuantityOrder, 
+                oi.UnitPriceCart
+            FROM Orders o
+            JOIN users u ON o.UserId = u.UserId
+            JOIN OrderItems oi ON o.OrderId = oi.OrderId
+            JOIN products p ON oi.ProductId = p.ProductId
+            JOIN branches b ON o.BranchId = b.BranchId
+            WHERE u.UserName = ?
+            ORDER BY o.OrderId DESC
+        `, [username]);
+
+        res.json(orders);
+    } catch (err) {
+        console.error("Ошибка при получении заказов:", err);
+        res.status(500).json({ message: "Ошибка базы данных" });
+    }
+});
+
+
 app.listen(3000, () => {
     console.log('Сервер запущен на http://localhost:3000');
 });

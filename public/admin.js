@@ -15,9 +15,69 @@ async function loadUsers() {
             userDiv.className = 'user-item';
             userDiv.textContent = user.UserName;
 
-            userDiv.addEventListener('click', () => {
+            userDiv.addEventListener('click', async () => {
                 document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active'));
                 userDiv.classList.add('active');
+
+                const orderWindow = document.getElementById('adminOrderWindow');
+                orderWindow.innerHTML = '<p style="color:white;">Загрузка...</p>';
+
+                try {
+                    let response = await fetch('/admin-orders', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                        body: JSON.stringify({ username: user.UserName })
+                    });
+                    let orders = await response.json();
+
+                    orderWindow.innerHTML = '';
+
+                    if (orders.length === 0) {
+                        orderWindow.innerHTML = '<p style="color: black; font-size: 16px;">У этого пользователя нет заказов</p>';
+                        return;
+                    }
+
+                    const groupedOrders = {};
+                    orders.forEach(row => {
+                        if (!groupedOrders[row.OrderId]) {
+                            groupedOrders[row.OrderId] = [];
+                        }
+                        groupedOrders[row.OrderId].push(row);
+                    });
+
+                    let orderNum = 1;
+                    let ordersHTML = '';
+
+                     for (const orderId in groupedOrders) {
+                        const branchAddress = groupedOrders[orderId][0].BranchAddress;
+
+                        ordersHTML += `<div class="single-order">
+                                            <div class="order-header">заказ ${orderNum}</div>`;
+
+                        groupedOrders[orderId].forEach(item => {
+                            ordersHTML += `<div class="order-row">
+                                                <span class="item-name">${item.ProductName}</span>
+                                                <span class="item-qty">- ${item.QuantityOrder} -</span>
+                                                <span class="item-price">${item.UnitPriceCart} р.</span>
+                                           </div>`;
+                        });
+
+                        ordersHTML += `<div class="order-branch">филиал: ${branchAddress}</div>`;
+                        
+                        ordersHTML += `</div>`;
+
+                        if (orderNum < Object.keys(groupedOrders).length) {
+                            ordersHTML += `<hr class="order-divider">`;
+                        }
+                        orderNum++;
+                    }
+
+                    orderWindow.innerHTML = ordersHTML;
+
+                } catch (err) {
+                    console.error("Ошибка загрузки заказов:", err);
+                    orderWindow.innerHTML = '<p style="color: red;">Ошибка загрузки</p>';
+                }
             });
 
             userList.appendChild(userDiv);

@@ -71,7 +71,7 @@ function sort_new(p) {
     const textStylePrice = isFour ? 'font-size: 20px' : '';
     const textStyleName = isFour ? 'font-size: 30px' : '';
 
-    shop_div.innerHTML += `<div class="product" price="${p.ProductPrice}">
+    shop_div.innerHTML += `<div class="product" price="${p.ProductPrice}" onclick="addToCart(${p.ProductId})">
                                 <div class="${productClass}">
                                     <p class="product_price" style='${textStylePrice}'>${p.ProductPrice}р.</p>
                                     <img class="${imgClass}" src="${p.ProductImage}" alt="${p.ProductName}">
@@ -145,3 +145,107 @@ deleteBtn.addEventListener('click', async () => {
         alert("Ошибка соединения с сервером");
     }
 });
+
+const cartItemsContainer = document.getElementById('cartItemsContainer');
+const cartTotalPrice = document.getElementById('cartTotalPrice');
+const clearCartBtn = document.getElementById('clearCartBtn');
+const checkoutBtn = document.getElementById('checkoutBtn');
+
+async function loadCart() {
+    if (!savedName) return;
+
+    try {
+        let response = await fetch('/get-cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+            body: JSON.stringify({ username: savedName })
+        });
+        let cart = await response.json();
+
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p style="color:white; font-size: 18px;">Корзина пуста</p>';
+            cartTotalPrice.textContent = '0р.';
+            return;
+        }
+
+        cart.forEach(item => {
+            total += item.QuantityCart * item.UnitPriceCart;
+            cartItemsContainer.innerHTML += `
+                <div class="cart-item" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; ">
+                    <img src="${item.ProductImage}" alt="${item.ProductName}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px; background: white;">
+                    <div>
+                        <p style="color: white; margin: 0; font-size: 18px;">${item.ProductName}</p>
+                        <p style="color: gray; margin: 0; font-size: 14px;">${item.QuantityCart} шт. × ${item.UnitPriceCart}р.</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        cartTotalPrice.textContent = `${total}р.`;
+
+    } catch (err) {
+        console.error("Ошибка загрузки корзины:", err);
+    }
+}
+
+loadCart();
+
+clearCartBtn.addEventListener('click', async () => {
+    if (!confirm("Очистить корзину?")) return;
+    
+    try {
+        await fetch('/clear-cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+            body: JSON.stringify({ username: savedName })
+        });
+        loadCart(); 
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+checkoutBtn.addEventListener('click', async () => {
+    if (cartTotalPrice.textContent === '0р.') return alert("Корзина пуста!");
+
+    try {
+        let response = await fetch('/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+            body: JSON.stringify({ username: savedName })
+        });
+        let result = await response.json();
+        alert(result.message);
+        
+        if (response.ok) loadCart(); 
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+async function addToCart(productId) {
+    if (!savedName) {
+        alert("Пожалуйста, войдите в аккаунт!");
+        return;
+    }
+    
+    try {
+        let response = await fetch('/add-to-cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+            body: JSON.stringify({ username: savedName, productId: productId })
+        });
+        
+        let result = await response.json();
+        alert(result.message);
+
+        loadCart(); 
+        
+    } catch (err) {
+        console.error("Ошибка добавления:", err);
+        alert("Ошибка соединения с сервером");
+    }
+}
