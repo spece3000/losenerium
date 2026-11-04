@@ -102,7 +102,55 @@
             <a href=""><img src="img/wk.png" alt="лого вк"></a>
         </div>
     </footer>
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-content">
 
+            <form class="auth-box" id="loginBox">
+                <h3>ВОЙТИ</h3>
+                <div class="input-group">
+                    <input type="text" id="login_username" name="username" placeholder="">
+                    <label>ЛОГИН</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login_password" name="password" placeholder="">
+                    <label>ПАРОЛЬ</label>
+                </div>
+                <button type="submit" class="auth-submit">войти</button>
+                <p class="auth-switch">нет аккаунта <span id="toRegister">зарегистрируйся</span></p>
+            </form>
+
+            <form class="auth-box" id="registerBox" style="display: none;">
+                <h3>РЕГИСТРАЦИЯ</h3>
+                
+                <div class="row">
+                    <div class="input-group">
+                        <input type="text" id="reg_username" name="username" placeholder="">
+                        <label>ЛОГИН</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="reg_password" name="password" placeholder="">
+                        <label>ПАРОЛЬ</label>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="input-group">
+                        <input type="email" id="reg_email" name="email" placeholder="">
+                        <label>ПОЧТА</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="reg_address" name="address" placeholder="">
+                        <label>АДРЕС</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-submit">зарегистрироваться</button>
+                <p class="auth-switch">уже есть аккаунт <span id="toLogin">войти</span></p>
+            </form>
+
+        </div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     <script type="module" src="bibliotek.js"></script>
