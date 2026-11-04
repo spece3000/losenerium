@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOSENERIUM</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cm-chessboard@8/assets/chessboard.css">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="client.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="containerLogo">
+            <img class="imgLogo" src="img/coffee-icon-logo.png" alt="лого">
+            <h1 class="textLogo">LOSENERIUM</h1>
+        </div>
+        <nav class="navigation">
+            <ul class="navigationUl">
+                <li><a href="#branchsHeadline">филиалы</a></li>
+                <li><a href="#menuHeadline">меню</a></li>
+                <li><a href="#aboutHeadline">история</a></li>
+                <li><img class="profileImg" src="img/profile.png" alt="профиль"></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="img/Slide1.webp" alt=""></div>
+                <div class="swiper-slide"><img src="img/Slide2.webp" alt=""></div>
+                <div class="swiper-slide"><img src="img/Slide3.webp" alt=""></div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </section>
+
+        <h2 id="branchsHeadline">наши филиалы</h2>
+        <section class="branchs">
+            <img src="img/im1.webp" alt="филиал 1">
+            <img src="img/im2.webp" alt="филиал 2">
+            <img src="img/im3.webp" alt="филиал 3">
+        </section>
+
+        <h2 id="menuHeadline">меню</h2>
+        <section class="menu">
+            <div class="menuManipulate">
+                <select class="choice_sort">
+                    <option value="normal">стандарт</option>
+                    <option value="up_price">по возрастанию</option>
+                    <option value="down_price">по убыванию</option>
+                </select>
+                <div class="paginathion">
+                    <button class="pagButton">1</button>
+                    <button class="pagButton">2</button>
+                    <button class="pagButton">3</button>
+                </div>
+                <div class="query">
+                    <div class="querys_three">
+                        <div class="query_three"></div><div class="query_three"></div><div class="query_three"></div>
+                        <div class="query_three"></div><div class="query_three"></div><div class="query_three"></div>
+                        <div class="query_three"></div><div class="query_three"></div><div class="query_three"></div>
+                    </div>
+                    <div class="querys_four">
+                        <div class="query_four"></div><div class="query_four"></div><div class="query_four"></div><div class="query_four"></div>
+                        <div class="query_four"></div><div class="query_four"></div><div class="query_four"></div><div class="query_four"></div>
+                        <div class="query_four"></div><div class="query_four"></div><div class="query_four"></div><div class="query_four"></div>
+                        <div class="query_four"></div><div class="query_four"></div><div class="query_four"></div><div class="query_four"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="menuContain">
+                <div class="product" price="150">
+                    <div class="product_osn">
+                        <p class="product_price">150р.</p>
+                        <img class="product_img"  src="img/products/tort.png" alt="вкусный кусок торта">
+                    </div>
+                    <p class="product_name">тортик</p>
+                </div>
+                <div class="product" price="50">
+                    <div class="product_osn">
+                        <p class="product_price">50р.</p>
+                        <img class="product_img"  src="img/products/tort.png" alt="вкусный кусок торта">
+                    </div>
+                    <p class="product_name">тортик</p>
+                </div>
+                <div class="product" price="15">
+                    <div class="product_osn">
+                        <p class="product_price">15р.</p>
+                        <img class="product_img"  src="img/products/tort.png" alt="вкусный кусок торта">
+                    </div>
+                    <p class="product_name">тортик</p>
+                </div>
+                <div class="product" price="1500">
+                    <div class="product_osn">
+                        <p class="product_price">1500р.</p>
+                        <img class="product_img"  src="img/products/tort.png" alt="вкусный кусок торта">
+                    </div>
+                    <p class="product_name">тортик</p>
+                </div>
+                <div class="product" price="10">
+                    <div class="product_osn">
+                        <p class="product_price">10р.</p>
+                        <img class="product_img"  src="img/products/tort.png" alt="вкусный кусок торта">
+                    </div>
+                    <p class="product_name">тортик</p>
+                </div>
+                <div class="product" price="120">
+                    <div class="product_osn">
+                        <p class="product_price">120р.</p>
+                        <img class="product_img"  src="img/products/tort.png" alt="вкусный кусок торта">
+                    </div>
+                    <p class="product_name">тортик</p>
+                </div>
+                <div class="product" price="100">
+                    <div class="product_osn">
+                        <p class="product_price">100р.</p>
+                        <img class="product_img"  src="img/products/tort.png" alt="вкусный кусок торта">
+                    </div>
+                    <p class="product_name">тортик</p>
+                </div>
+                <div class="product" price="110">
+                    <div class="product_osn">
+                        <p class="product_price">110р.</p>
+                        <img class="product_img"  src="img/products/tort.png" alt="вкусный кусок торта">
+                    </div>
+                    <p class="product_name">тортик</p>
+                </div>
+                <div class="product" price="1250">
+                    <div class="product_osn">
+                        <p class="product_price">1250р.</p>
+                        <img class="product_img"  src="img/products/tort.png" alt="вкусный кусок торта">
+                    </div>
+                    <p class="product_name">тортик</p>
+                </div>
+            </div>
+        </section>
+
+        <h2 id="aboutHeadline">история</h2>
+        <section class="about_sec">
+            <div class="about">
+                <div>
+                    <img src="img/tree.png" alt="дерево">
+                    <p>История сети началась с южнокорейского кафе, которое открыла Юн-Джин Ли, вдохновившись сериалом «W — два мира». В России «ЧБ Кафе» заработало в ноябре: интерьер петербургского филиала создала художница Анфиса Тошина, а команда выполнила ремонт своими руками. Вирусную известность сеть обрела благодаря фотографиям филиала на набережной Мойки, разлетевшимся по соцсетям.</p>
+                </div>
+                <div class="about-board">
+                    <p>«ЧБ Кафе» — сеть кофеен в Москве и Санкт-Петербурге с монохромным интерьером: помещение выглядит как плоскостной рисунок углём на белой бумаге, а посетитель — единственный объёмный объект в этом нарисованном мире. В меню — кофейная классика, завтраки, сэндвичи и десерты.</p>
+                    <div id="board"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <a class="num" href="tel:89999999999">89999999999</a>
+        <a href="mailto:LR@gmail.com">LR@gmail.com</a>
+        <div class="socialMediaContain">
+            <a href=""><img src="img/tg.png" alt="лого телеграмм"></a>
+            <a href=""><img src="img/tt.png" alt="лого тик тока"></a>
+            <a href=""><img src="img/wk.png" alt="лого вк"></a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script type="module" src="bibliotek.js"></script>
+</body>
+</html>
