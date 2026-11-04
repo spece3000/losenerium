@@ -14,7 +14,7 @@ const pool = mysql.createPool({
     host: "localhost",
     user: "root",
     password: "123456",
-    database: "userdb",
+    database: "losenerium",
     connectionLimit: 5
 });
 
@@ -28,22 +28,36 @@ pool.getConnection()
     });
 
 app.post("/menu", async function(req, res) {
-    res.set("Cache-Control", "no-store");
-    const {userName, userPassword} = req.body;
+    const { sort, pag, quan } = req.body;
     
-    if (!userName || !userPassword) {
-        return res.status(400).json({ message: "Заполни все поля!" });
+    const page = parseInt(pag) || 1;
+    const quantityType = parseInt(quan) || 3;
+
+
+    const limit = (quantityType === 4) ? 16 : 9; 
+    const offset = (page - 1) * limit;
+
+    let orderBy = 'ProductId ASC';
+    
+    if (sort === 'up_price') {
+        orderBy = 'ProductPrice ASC';
+    } else if (sort === 'down_price') {
+        orderBy = 'ProductPrice DESC';
     }
 
     try {
-        await pool.query(
-            "INSERT INTO users_pass (userName, userPassword) VALUES (?, ?)",
-            [userName, userPassword]
+        const [result] = await pool.query(
+            `SELECT ProductId, ProductName, ProductPrice, ProductImage 
+             FROM products 
+             ORDER BY ${orderBy} 
+             LIMIT ? OFFSET ?`,
+            [limit, offset]
         );
 
-        res.json({ message: `Ваши данные ${userName} успешно сохранены на БД!` });
+        res.json(result);
+        
     } catch (err) {
-        console.error("Ошибка при записи в БД:", err);
+        console.error("Ошибка при вырисовывании меню:", err);
         res.status(500).json({ message: "Ошибка базы данных" });
     }
 });
